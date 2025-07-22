@@ -37,6 +37,7 @@ export const LoginScreen = () => {
       if (dataRegistered != null){
           setMessage('Usuario correctamente logueado');
           showDialog();
+          navigation.navigate('Home');
       }
     }catch(error: any){
       setMessage(error.message);

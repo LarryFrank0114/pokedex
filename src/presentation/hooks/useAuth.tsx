@@ -56,6 +56,8 @@ export const useAuth = create<AuthState>()((set,get) => ({
 
         const resp: StatusUser = await CheckStatusUseCase(email, token);
         if(!resp) {
+            await StorageAdapter.removeItem('token');
+            await StorageAdapter.removeItem('email');
             set({
                 status: 'unauthenticated',
                 token: undefined,
