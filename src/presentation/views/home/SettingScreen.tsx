@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, FlatList, StyleSheet, TextInput, Button } from 'react-native'
-import firestore from '@react-native-firebase/firestore'
+import database from '@react-native-firebase/database'
 import { useAuth } from '../../hooks/useAuth';
 
 export const SettingScreen = () => {
@@ -11,9 +11,9 @@ export const SettingScreen = () => {
   const {user} = useAuth();
 
   useEffect(() => {
-    const messageRef =  firestore().collection('messages');
+    const messageRef =  database().ref('messages');
 
-    const unsubscribe = messageRef
+    /*const unsubscribe = messageRef
       .orderBy('timestamp', 'asc')
       .onSnapshot(snapshot => {
         const loadMessages = snapshot.docs.map(doc => doc.data());
@@ -21,7 +21,14 @@ export const SettingScreen = () => {
         setMessages(loadMessages);  
       });
 
-      return () => unsubscribe();
+      return () => unsubscribe();*/
+
+      const onValueChange = messageRef.on('child_added', snapshot => {
+        const newMessage = snapshot.val();
+        setMessages(prevMessages => [newMessage, ...prevMessages]);
+      });
+
+      return () => messageRef.off('child_added', onValueChange);
 
   },[]);
 
@@ -38,7 +45,7 @@ export const SettingScreen = () => {
 
     console.log(newMessage);
 
-    const response = await fetch('http://10.0.2.2:3000/api/v1/notification/message',{
+    const response = await fetch('http://10.0.2.2:3000/api/v1/notification/messageRT',{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
