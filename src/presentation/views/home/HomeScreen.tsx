@@ -21,8 +21,8 @@ export const HomeScreen = () => {
             actionButton={() => navigation.navigate('Pokemons')}
         />
         <ButtonComponent 
-            label= "Ir a Registro"
-            actionButton={() => navigation.navigate('Register')}
+            label= "Ir a Mensajería"
+            actionButton={() => navigation.navigate('Setting')}
         />
          <ButtonComponent 
             label= "Cerrar Sesión"

@@ -9,7 +9,7 @@ export type AuthStatus = 'checking' | 'authenticated' | 'unauthenticated';
 export interface AuthState{
     status: AuthStatus;    
     token?: string;
-    user?: User;
+    user?: StatusUser;
 
     login: (email: string, password: string) => Promise<any>;
     checkStatus: () => Promise<any>;
@@ -69,7 +69,7 @@ export const useAuth = create<AuthState>()((set,get) => ({
         set({
             status: 'authenticated',
             token: undefined,
-            user: undefined           
+            user: resp           
         });
         return resp;
     },
